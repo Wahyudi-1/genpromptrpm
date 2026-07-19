@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generator Prompt Pembelajaran Mendalam SMA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        .tab-active { background-color: #eff6ff; color: #2563eb; border-left: 4px solid #2563eb; font-weight: 600; }
+        .tab-inactive { color: #475569; border-left: 4px solid transparent; }
+        .tab-inactive:hover { background-color: #f1f5f9; color: #0f172a; }
+        /* Toast notification styles */
+        #toast {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: #10b981;
+            color: #fff;
+            text-align: center;
+            border-radius: 8px;
+            padding: 12px;
+            position: fixed;
+            z-index: 50;
+            left: 50%;
+            bottom: 30px;
+            transform: translateX(-50%);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            opacity: 0;
+            transition: opacity 0.3s, bottom 0.3s;
+        }
+        #toast.show {
+            visibility: visible;
+            opacity: 1;
+            bottom: 50px;
+        }
+    </style>
+</head>
+<body class="text-slate-800 antialiased min-h-screen flex flex-col">
+
+    <header class="bg-white shadow-sm sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-xl">G</div>
+                <h1 class="text-lg font-bold text-slate-800">Generator Prompt RPM</h1>
+            </div>
+            <div class="text-sm text-slate-500 hidden sm:block">
+                Optimasi Gemini AI untuk Penyusunan Perencaan Pembelajaran
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col md:flex-row gap-6">
+        
+        <!-- Sidebar Menu -->
+        <aside class="w-full md:w-1/3 lg:w-1/4 flex flex-col gap-2 bg-white p-4 rounded-xl shadow-sm border border-slate-100 h-fit">
+            <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 px-3">Menu Generator</h2>
+            <button onclick="switchTab(1)" id="tab-1" class="tab-btn tab-active text-left px-4 py-3 rounded-r-lg transition-colors text-sm">
+                1. Perumusan Tujuan Pembelajaran (TP)
+            </button>
+            <button onclick="switchTab(2)" id="tab-2" class="tab-btn tab-inactive text-left px-4 py-3 rounded-r-lg transition-colors text-sm">
+                2. Penyusunan Alur TP (ATP)
+            </button>
+            <button onclick="switchTab(3)" id="tab-3" class="tab-btn tab-inactive text-left px-4 py-3 rounded-r-lg transition-colors text-sm">
+                3. Perencanaan Pembelajaran (Modul Ajar)
+            </button>
+            <button onclick="switchTab(4)" id="tab-4" class="tab-btn tab-inactive text-left px-4 py-3 rounded-r-lg transition-colors text-sm">
+                4. Pembangun Lembar Kerja Siswa (LKS)
+            </button>
+            <button onclick="switchTab(5)" id="tab-5" class="tab-btn tab-inactive text-left px-4 py-3 rounded-r-lg transition-colors text-sm">
+                5. Asesmen Formatif (Kinerja & KKTP)
+            </button>
+            <button onclick="switchTab(6)" id="tab-6" class="tab-btn tab-inactive text-left px-4 py-3 rounded-r-lg transition-colors text-sm">
+                6. Asesmen Sumatif (Literasi & Numerasi)
+            </button>
+        </aside>
+
+        <section class="w-full md:w-2/3 lg:w-3/4 flex flex-col gap-6">
+            
+            <!-- Form Container -->
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
+                <h2 id="form-title" class="text-xl font-bold text-slate-800 mb-6">1. Perumusan Tujuan Pembelajaran (TP)</h2>
+                
+                <!-- Form 1: TP -->
+                <div id="form-1" class="form-section block space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Mata Pelajaran</label>
+                        <input type="text" id="mapel-1" placeholder="Misal: Biologi, Fisika, Sejarah..." class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Fase / Kelas</label>
+                        <input type="text" id="fase-1" placeholder="Misal: Fase E (Kelas 10) atau Fase F (Kelas 11)" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Teks Capaian Pembelajaran (CP)</label>
+                        <textarea id="cp-1" rows="4" placeholder="Salin dan tempel teks CP dari regulasi terbaru di sini..." class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"></textarea>
+                    </div>
+                </div>
+
+                <!-- Form 2: ATP -->
+                <div id="form-2" class="form-section hidden space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Mata Pelajaran & Kelas</label>
+                        <input type="text" id="mapel-2" placeholder="Misal: Matematika Fase F" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Daftar Tujuan Pembelajaran (TP)</label>
+                        <textarea id="tp-2" rows="4" placeholder="Tempelkan daftar TP yang telah dirumuskan..." class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Alokasi Waktu Total</label>
+                        <input type="text" id="waktu-2" placeholder="Misal: 1 Semester (36 JP)" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+                    </div>
+                </div>
+
+                <!-- Form 3: Modul Ajar -->
+                <div id="form-3" class="form-section hidden space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Tujuan Pembelajaran (TP) Target</label>
+                        <textarea id="tp-3" rows="2" placeholder="Masukkan 1 atau 2 TP yang menjadi fokus modul ini..." class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"></textarea>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Model Pembelajaran</label>
+                            <input type="text" id="model-3" placeholder="Misal: Project-Based Learning (PjBL)" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Alokasi Waktu Pertemuan</label>
+                            <input type="text" id="waktu-3" placeholder="Misal: 2 kali pertemuan (4 x 45 menit)" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Konteks Isu Nyata (Opsional tapi disarankan)</label>
+                        <input type="text" id="isu-3" placeholder="Misal: Krisis air bersih di musim kemarau, Pemilihan ketua OSIS, dll." class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+                    </div>
+                </div>
+
+                <!-- Form 4: LKS -->
+                <div id="form-4" class="form-section hidden space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Kelas / Fase</label>
+                        <input type="text" id="kelas-4" placeholder="Misal: Kelas XI SMA" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Topik Pembelajaran</label>
+                        <input type="text" id="topik-4" placeholder="Misal: Perubahan Iklim dan Energi Alternatif" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Deskripsi Aktivitas 'Mengaplikasi'</label>
+                        <textarea id="aktivitas-4" rows="3" placeholder="Deskripsikan kegiatan proyek/investigasi dari modul ajar Anda..." class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"></textarea>
+                    </div>
+                </div>
+
+                <!-- Form 5: Asesmen Formatif (Rubrik & Kinerja) -->
+                <div id="form-5" class="form-section hidden space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Kelas / Fase</label>
+                        <input type="text" id="kelas-5" placeholder="Misal: Kelas X SMA" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Deskripsi Tugas / LKS yang Dinilai</label>
+                        <textarea id="tugas-5" rows="3" placeholder="Misal: Laporan observasi pasar tradisional, Presentasi sel volta..." class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"></textarea>
+                    </div>
+                </div>
+
+                <!-- Form 6: Asesmen Sumatif (Literasi & Numerasi) -->
+                <div id="form-6" class="form-section hidden space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Mata Pelajaran & Kelas</label>
+                            <input type="text" id="mapel-6" placeholder="Misal: Geografi Kelas X SMA" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Topik / Materi Pembelajaran</label>
+                            <input type="text" id="topik-6" placeholder="Misal: Litosfer dan Dampaknya" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Konteks Lokal/Wilayah (Untuk Stimulus Soal)</label>
+                        <input type="text" id="lokal-6" placeholder="Misal: Wilayah Kabupaten Ngawi, Pesisir Jawa..." class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+                    </div>
+                </div>
+
+                <!-- Tombol Generate -->
+                <div class="mt-6 flex justify-end">
+                    <button onclick="generatePrompt()" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-lg shadow-sm transition-colors flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd" />
+                        </svg>
+                        Buat Prompt
+                    </button>
+                </div>
+            </div>
+
+            <!-- Result Container -->
+            <div id="result-container" class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 hidden">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-bold text-slate-800">Hasil Prompt</h3>
+                    <button onclick="copyPrompt()" class="text-blue-600 hover:text-blue-800 hover:bg-blue-50 p-2 rounded-lg transition-colors flex items-center gap-1 text-sm font-medium border border-blue-200">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                        </svg>
+                        Salin Prompt
+                    </button>
+                </div>
+                
+                <div class="bg-slate-50 border border-slate-200 rounded-lg p-1">
+                    <textarea id="output-prompt" readonly class="w-full h-64 p-3 bg-transparent resize-y outline-none text-slate-700 leading-relaxed font-mono text-sm"></textarea>
+                </div>
+                <div class="mt-3 flex items-start gap-2 p-3 bg-blue-50 text-blue-800 rounded-lg text-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 flex-shrink-0 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+                    </svg>
+                    <p>Setelah disalin, buka <a href="https://gemini.google.com" target="_blank" class="font-bold underline">Google Gemini</a>, tempelkan prompt ini di kolom obrolan, lalu tekan kirim.</p>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <!-- Toast Notification -->
+    <div id="toast">Prompt berhasil disalin ke papan klip!</div>
+
+    <script>
+        let currentTab = 1;
+        const titles = {
+            1: "1. Perumusan Tujuan Pembelajaran (TP)",
+            2: "2. Penyusunan Alur TP (ATP)",
+            3: "3. Perencanaan Pembelajaran (Modul Ajar)",
+            4: "4. Pembangun Lembar Kerja Siswa (LKS)",
+            5: "5. Asesmen Formatif (Kinerja & KKTP)",
+            6: "6. Asesmen Sumatif (Literasi & Numerasi)"
+        };
+
+        function switchTab(tabId) {
+            // Update Tab Styling
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('tab-active');
+                btn.classList.add('tab-inactive');
+            });
+            document.getElementById(`tab-${tabId}`).classList.remove('tab-inactive');
+            document.getElementById(`tab-${tabId}`).classList.add('tab-active');
+
+            // Update Title
+            document.getElementById('form-title').innerText = titles[tabId];
+
+            // Show/Hide Forms
+            document.querySelectorAll('.form-section').forEach(form => {
+                form.classList.add('hidden');
+            });
+            document.getElementById(`form-${tabId}`).classList.remove('hidden');
+
+            // Hide result container when switching tabs
+            document.getElementById('result-container').classList.add('hidden');
+            
+            currentTab = tabId;
+        }
+
+        function generatePrompt() {
+            let promptText = "";
+
+            if (currentTab === 1) {
+                const mapel = document.getElementById('mapel-1').value || "[Nama Mata Pelajaran]";
+                const fase = document.getElementById('fase-1').value || "[Fase/Kelas]";
+                const cp = document.getElementById('cp-1').value || "[Masukkan Teks CP Anda di sini]";
+
+                promptText = `Bertindaklah sebagai Ahli Kurikulum dan Pedagogi SMA ${fase}. Saya adalah guru mata pelajaran ${mapel}. \n\nBerikut adalah teks Capaian Pembelajaran (CP) saya:\n"${cp}"\n\nInstruksi Tugas:\n1. Lakukan analisis kompetensi (kata kerja operasional) dan konten materi esensial dari teks CP tersebut.\n2. Rumuskan minimal 4 Tujuan Pembelajaran (TP) turunan yang mendorong keterampilan berpikir tingkat tinggi (HOTS).\n3. Integrasikan Taksonomi SOLO pada tingkat Relasional atau Berpikir Abstrak yang Mendalam (atau Taksonomi Bloom level Menganalisis/Mencipta).\n4. Sajikan hasilnya dalam bentuk tabel rapi dengan kolom: Kompetensi, Lingkup Materi, dan Rumusan TP sesuai dengan Panduan Pembelajaran dan Asesmen (Revisi 2025).`;
+            
+            } else if (currentTab === 2) {
+                const mapel = document.getElementById('mapel-2').value || "[Mata Pelajaran & Kelas]";
+                const tp = document.getElementById('tp-2').value || "[Daftar TP]";
+                const waktu = document.getElementById('waktu-2').value || "[Alokasi Waktu]";
+
+                promptText = `Bertindaklah sebagai Ahli Kurikulum tingkat SMA. Berdasarkan rumusan Tujuan Pembelajaran (TP) mata pelajaran ${mapel} berikut:\n\n"${tp}"\n\nInstruksi Tugas:\n1. Susunlah TP tersebut menjadi sebuah Alur Tujuan Pembelajaran (ATP) yang logis, sistematis, dan berkesinambungan untuk total alokasi waktu ${waktu}.\n2. Gunakan pendekatan/metode pengurutan yang paling relevan (pilih antara: Pengurutan Hierarkis, Konkret ke Abstrak, atau Scaffolding).\n3. Sajikan dalam bentuk tabel ATP yang memuat: Nomor Urut, Rumusan TP, dan Perkiraan Alokasi Waktu (JP).\n4. Berikan paragraf singkat di bawah tabel yang menjelaskan rasionalisasi atau alasan pedagogis mengapa Anda memilih urutan tersebut bagi perkembangan kognitif siswa SMA.`;
+            
+            } else if (currentTab === 3) {
+                const tp = document.getElementById('tp-3').value || "[Tujuan Pembelajaran Target]";
+                const model = document.getElementById('model-3').value || "Project-Based Learning (PjBL)";
+                const waktu = document.getElementById('waktu-3').value || "[Alokasi Waktu]";
+                const isu = document.getElementById('isu-3').value || "[Isu Lokal/Global]";
+
+                promptText = `Gunakan Tujuan Pembelajaran berikut:\n"${tp}"\n\nBuatkan draf Modul Ajar / Perencanaan Pembelajaran untuk ${waktu} di tingkat SMA menggunakan sintaks model ${model}.\n\nInstruksi Khusus Desain (Sesuai Konsep Pembelajaran Mendalam Revisi 2025):\n1. Terapkan kerangka kerja Backward Design (mulai dari tujuan -> asesmen pembuktian -> baru merancang aktivitas pembelajaran).\n2. Bagian langkah kegiatan inti pembelajaran WAJIB secara eksplisit dibagi menjadi 3 tahap pengalaman belajar: MEMAHAMI, MENGAPLIKASI, dan MEREFLEKSI.\n3. Integrasikan prinsip BERMAKNA dengan mengaitkan materi secara kontekstual ke isu nyata berikut: "${isu}".\n4. Integrasikan prinsip BERKESADARAN dengan memberi ruang bagi siswa untuk memilih strategi belajarnya sendiri atau meregulasi dirinya.\n5. Tuliskan 2-3 pertanyaan pemantik (trigger questions) yang menantang nalar kritis dan menggugah rasa ingin tahu siswa di tahap pendahuluan.`;
+            
+            } else if (currentTab === 4) {
+                const kelas = document.getElementById('kelas-4').value || "[Kelas]";
+                const topik = document.getElementById('topik-4').value || "[Topik Pembelajaran]";
+                const aktivitas = document.getElementById('aktivitas-4').value || "[Deskripsi Aktivitas]";
+
+                promptText = `Berdasarkan aktivitas pada tahap 'Mengaplikasi' di Modul Ajar yaitu:\n"${aktivitas}"\n\nRancanglah sebuah Lembar Kerja Siswa (LKS) interaktif berbasis studi kasus/investigasi mendalam untuk siswa ${kelas} pada materi ${topik}.\n\nKriteria Konten LKS:\n1. Berikan Judul Proyek/Investigasi yang kreatif dan mengundang rasa penasaran.\n2. Buat sebuah skenario/narasi permasalahan dunia nyata (kontekstual) yang harus dipecahkan siswa.\n3. Tuliskan petunjuk kerja kolaboratif secara langkah demi langkah untuk kelompok (terdiri dari 3-4 orang).\n4. Sediakan 3-4 pertanyaan analitis (scaffolding) yang memandu siswa berpikir dari sudut pandang yang berbeda (perspektif baru).\n5. Sediakan rancangan tabel atau format struktur laporan singkat untuk mencatat data temuan dan rancangan solusi inovatif mereka.`;
+            
+            } else if (currentTab === 5) {
+                const kelas = document.getElementById('kelas-5').value || "[Kelas]";
+                const tugas = document.getElementById('tugas-5').value || "[Deskripsi Tugas/LKS]";
+
+                promptText = `Bertindaklah sebagai Ahli Evaluasi Pendidikan SMA. Buatkan asesmen kinerja formatif (berupa unjuk kerja presentasi atau produk) untuk menilai tugas/LKS yang dikerjakan siswa berikut:\n"${tugas}"\n\nSusunlah Kriteria Ketercapaian Tujuan Pembelajaran (KKTP) menggunakan pendekatan Rubrik dengan 5 skala: Belum Berkembang, Baru Berkembang, Cukup Berkembang, Sangat Berkembang, dan Mahir.\n\nInstruksi Khusus:\nBuat deskriptor yang jelas dan objektif untuk setiap skala yang mengukur kedalaman pemahaman dan penalaran kritis siswa ${kelas}. Pastikan rubrik mengukur aspek pengetahuan, keterampilan, dan sikap secara terpadu (holistik) sesuai kerangka Pembelajaran Mendalam.`;
+            
+            } else if (currentTab === 6) {
+                const mapel = document.getElementById('mapel-6').value || "[Mata Pelajaran & Kelas]";
+                const topik = document.getElementById('topik-6').value || "[Topik/Materi]";
+                const lokal = document.getElementById('lokal-6').value || "[Konteks Lokal/Wilayah]";
+
+                promptText = `Bertindaklah sebagai Ahli Evaluasi Pendidikan SMA. Buatkan instrumen asesmen sumatif untuk mata pelajaran ${mapel} pada topik materi ${topik}.\n\nInstruksi Khusus:\n1. Buatkan 10 soal kuis yang terdiri dari jenis: pilihan ganda, pilihan ganda kompleks, menguji kebenaran pernyataan (benar/salah), dan menjodohkan.\n2. Soal harus mengukur kemampuan kognitif mulai dari Level 1 (Pemahaman), Level 2 (Aplikasi), hingga Level 3 (Penalaran/HOTS) dengan distribusi normal.\n3. Wajib menyajikan soal dengan stimulus (teks narasi, tabel, atau kasus pendek) yang lekat dengan konteks lokal/wilayah ${lokal} dengan format stimulus berupa literasi dan numerasi.\n4. Sajikan format teksnya agar rapi dan mudah disalin langsung ke Google Forms, lengkap dengan Kunci Jawaban beserta Pembahasan singkat yang edukatif di bagian paling bawah.`;
+            }
+
+            // Tampilkan hasil
+            const resultContainer = document.getElementById('result-container');
+            const outputPrompt = document.getElementById('output-prompt');
+            
+            outputPrompt.value = promptText;
+            resultContainer.classList.remove('hidden');
+            
+            // Scroll sedikit ke bawah untuk memperlihatkan hasil
+            resultContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        // Menggunakan document.execCommand('copy') sebagai fallback karena clipboard API
+        // kadang dibatasi dalam lingkungan iFrame.
+        function copyPrompt() {
+            const textarea = document.getElementById('output-prompt');
+            textarea.select();
+            textarea.setSelectionRange(0, 99999); // Untuk perangkat mobile
+            
+            try {
+                document.execCommand('copy');
+                showToast();
+            } catch (err) {
+                console.error("Gagal menyalin teks: ", err);
+                const toast = document.getElementById("toast");
+                toast.innerText = "Gagal menyalin. Silakan blok teks dan salin manual.";
+                toast.style.backgroundColor = "#ef4444"; 
+                showToast();
+                setTimeout(() => {
+                    toast.style.backgroundColor = "#10b981";
+                    toast.innerText = "Prompt berhasil disalin ke papan klip!";
+                }, 3000);
+            }
+            
+            // Hapus seleksi teks setelah disalin
+            window.getSelection().removeAllRanges();
+        }
+
+        function showToast() {
+            const toast = document.getElementById("toast");
+            toast.className = "show";
+            setTimeout(function(){ 
+                toast.className = toast.className.replace("show", ""); 
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
