@@ -162,17 +162,29 @@
 
                 <!-- Form 4: LKS -->
                 <div id="form-4" class="form-section hidden space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-1">Kelas / Fase</label>
-                        <input type="text" id="kelas-4" placeholder="Misal: Kelas XI SMA" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Kelas / Fase</label>
+                            <input type="text" id="kelas-4" placeholder="Misal: Kelas XI SMA" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Pertemuan Ke-</label>
+                            <input type="number" id="pertemuan-4" placeholder="Misal: 1" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+                        </div>
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-1">Topik Pembelajaran</label>
-                        <input type="text" id="topik-4" placeholder="Misal: Perubahan Iklim dan Energi Alternatif" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Topik Utama</label>
+                            <input type="text" id="topik-4" placeholder="Misal: Perubahan Iklim" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Sub-Topik Pertemuan Ini</label>
+                            <input type="text" id="subtopik-4" placeholder="Misal: Efek Rumah Kaca" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+                        </div>
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-slate-700 mb-1">Deskripsi Aktivitas 'Mengaplikasi'</label>
-                        <textarea id="aktivitas-4" rows="3" placeholder="Deskripsikan kegiatan proyek/investigasi dari modul ajar Anda..." class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"></textarea>
+                        <textarea id="aktivitas-4" rows="3" placeholder="Salin aktivitas tahap 'Mengaplikasi' dari modul pertemuan ini..." class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"></textarea>
                     </div>
                 </div>
 
@@ -345,10 +357,12 @@
 
             } else if (currentTab === 4) {
                 const kelas = document.getElementById('kelas-4').value || "[Kelas]";
-                const topik = document.getElementById('topik-4').value || "[Topik Pembelajaran]";
-                const aktivitas = document.getElementById('aktivitas-4').value || "[Deskripsi Aktivitas]";
+                const pertemuan = document.getElementById('pertemuan-4').value || "[X]";
+                const topik = document.getElementById('topik-4').value || "[Topik Utama]";
+                const subtopik = document.getElementById('subtopik-4').value || "[Sub-Topik Pertemuan Ini]";
+                const aktivitas = document.getElementById('aktivitas-4').value || "[Deskripsi Aktivitas Mengaplikasi]";
 
-                promptText = `Berdasarkan aktivitas pada tahap 'Mengaplikasi' di Modul Ajar yaitu:\n"${aktivitas}"\n\nRancanglah sebuah Lembar Kerja Siswa (LKS) interaktif berbasis studi kasus/investigasi mendalam untuk siswa ${kelas} pada materi ${topik}.\n\nKriteria Konten LKS:\n1. Berikan Judul Proyek/Investigasi yang kreatif dan mengundang rasa penasaran.\n2. Buat sebuah skenario/narasi permasalahan dunia nyata (kontekstual) yang harus dipecahkan siswa.\n3. Tuliskan petunjuk kerja kolaboratif secara langkah demi langkah untuk kelompok (terdiri dari 3-4 orang).\n4. Sediakan 3-4 pertanyaan analitis (scaffolding) yang memandu siswa berpikir dari sudut pandang yang berbeda (perspektif baru).\n5. Sediakan rancangan tabel atau format struktur laporan singkat untuk mencatat data temuan dan rancangan solusi inovatif mereka.`;
+                promptText = `Bertindaklah sebagai Ahli Kurikulum dan Desainer Instruksional SMA. Rancanglah Lembar Kerja Siswa (LKS) interaktif yang spesifik digunakan untuk PERTEMUAN KE-${pertemuan}.\n\nKonteks Pembelajaran:\n- Kelas/Fase: ${kelas}\n- Topik Utama: ${topik}\n- Sub-Topik Pertemuan Ini: "${subtopik}"\n\nFokus LKS ini adalah memandu siswa mengeksekusi aktivitas pada tahap 'Mengaplikasi' berdasarkan rencana pertemuan ini, dengan deskripsi kegiatan berikut:\n"${aktivitas}"\n\nKriteria Konten LKS (Sesuai Konsep Pembelajaran Mendalam):\n1. JUDUL & TUJUAN: Berikan judul LKS yang menarik dan tuliskan tujuan pembelajaran spesifik untuk aktivitas pertemuan ini.\n2. STIMULUS/SKENARIO: Buat pengantar atau skenario kasus/masalah singkat yang mengaitkan aktivitas ini dengan dunia nyata.\n3. LANGKAH KERJA (SCAFFOLDING): Susun instruksi kerja kolaboratif langkah demi langkah yang jelas dan terstruktur untuk kelompok.\n4. PERTANYAAN ANALITIS: Sediakan 3-4 pertanyaan pemandu (probing questions) di sela-sela langkah kerja yang mendorong siswa berpikir kritis (HOTS) saat memproses data/informasi.\n5. FORMAT PENCATATAN HASIL: Buatkan draf rancangan tabel, bagan, atau ruang kerja bagi siswa untuk menyajikan data temuan atau hasil pemikiran mereka khusus pada tahap pertemuan ini.`;
             
             } else if (currentTab === 5) {
                 // Logika Asesmen Formatif (Rubrik Progresif)
